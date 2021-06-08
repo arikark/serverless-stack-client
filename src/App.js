@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 import "./App.css";
-import Home from "./containers/Home";
 import AppNavbar from './containers/AppNavbar.js';
 import Routes from "./Routes";
 
@@ -10,6 +9,7 @@ import { AppContext } from "./libs/contextLib";
 function App() {
 	const [isAuthenticated, userHasAuthenticated] = useState(false);
 	const [user, setUser] = useState(null);
+	const [notes, setNotes] = useState(null);
 
 	return (
 		<div className="App container py-3">
@@ -17,12 +17,12 @@ function App() {
 				isAuthenticated,
 				userHasAuthenticated,
 				user,
-				setUser
+				setUser,
+				notes,
+				setNotes
 			}}>
 				<AppNavbar />
-				<Routes>
-					<Home />
-				</Routes>
+				<Routes />
 			</AppContext.Provider>
 		</div>
 	)

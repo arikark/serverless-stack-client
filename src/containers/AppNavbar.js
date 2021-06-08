@@ -26,13 +26,14 @@ export default function AppNavbar() {
 				<Navbar.Toggle />
 				<Navbar.Collapse className="justify-content-end">
 					<Nav activeKey={window.location.pathname}>
-						{isAuthenticated === AuthState.SignedIn ? (
+						{isAuthenticated === AuthState.SignedIn &&
+							window.location.pathname !== "./containers/todoapp" ? (
 							<AmplifySignOut
 								handleAuthStateChange={handleSignOut}
 							/>
 							) : (
-							<LinkContainer to="/todoapp">
-								<Nav.Link>Todo App</Nav.Link>
+							<LinkContainer to="/notes">
+								<Nav.Link>Notes</Nav.Link>
 							</LinkContainer>
 						)}
 					</Nav>

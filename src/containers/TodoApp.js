@@ -1,5 +1,7 @@
 import React from "react";
 import { useAppContext } from "../libs/contextLib";
+import NotesList from './NotesList'
+
 // import { useHistory } from "react-router-dom";
 import './TodoApp.css';
 
@@ -16,6 +18,7 @@ function TodoApp() {
   return isAuthenticated === AuthState.SignedIn && user ? (
 		<div className="TodoApp">
 			<div>Hello, {user.username}</div>
+			<NotesList />
 		</div>
 	) : (
 			<Login />

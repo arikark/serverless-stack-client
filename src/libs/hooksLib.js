@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 export function useFormFields(initialState) {
   const [fields, setValues] = useState(initialState);
@@ -12,4 +12,12 @@ export function useFormFields(initialState) {
       });
     }
   ];
+}
+
+export function useToggle(initialValue = false) {
+  const [value, setValue] = useState(initialValue);
+  const toggle = useCallback(() => {
+    setValue(v => !v);
+  }, []);
+  return [value, toggle];
 }
