@@ -5,13 +5,21 @@ import {
   AmplifySignOut,
 } from "@aws-amplify/ui-react";
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
+import { useHistory } from "react-router-dom";
 
 
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 
+
+
 export default function AppNavbar() {
-  const { isAuthenticated } = useAppContext();
+	const history = useHistory();
+	const { isAuthenticated, userHasAuthenticated } = useAppContext();
+	const handleSignOut = () => {
+		userHasAuthenticated(AuthState.SignedOut)
+		history.push("/")
+	}
 	return (
 		<div className="App container py-3">
 			<Navbar collapseOnSelect bg="light" expand="md" className="mb-3">
@@ -24,13 +32,13 @@ export default function AppNavbar() {
 				<Navbar.Collapse className="justify-content-end">
 					<Nav activeKey={window.location.pathname}>
 						{isAuthenticated === AuthState.SignedIn ? (
-							<AmplifySignOut />
+							<AmplifySignOut
+								handleAuthStateChange={handleSignOut}
+							/>
 						) : (
-							<>
-								<LinkContainer to="/todoapp">
-									<Nav.Link>Todo App</Nav.Link>
-								</LinkContainer>
-							</>
+							<LinkContainer to="/todoapp">
+								<Nav.Link>Todo App</Nav.Link>
+							</LinkContainer>
 						)}
 					</Nav>
 				</Navbar.Collapse>
