@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState } from "react";
 
 import "./App.css";
 import Home from "./containers/Home";
 import AppNavbar from './containers/AppNavbar.js';
 import Routes from "./Routes";
 
-
 import { AppContext } from "./libs/contextLib";
 
 function App() {
-	const history = useHistory();
 	const [isAuthenticated, userHasAuthenticated] = useState(false);
 	const [user, setUser] = useState(null);
 

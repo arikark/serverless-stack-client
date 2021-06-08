@@ -1,27 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useAppContext } from "../libs/contextLib";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import './TodoApp.css';
 
 import Login from "./Login"
-import Routes from "../Routes";
-import { AppContext } from "../libs/contextLib";
-import { Auth } from "aws-amplify";
-import { onError } from "../libs/errorLib";
-import {
-  AmplifyAuthContainer,
-	AmplifyAuthenticator,
-	AmplifySignIn
-} from "@aws-amplify/ui-react";
-import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
+// import { onError } from "../libs/errorLib";
+import { AuthState } from '@aws-amplify/ui-components';
 
 function TodoApp() {
-	const history = useHistory();
 	const {
 		isAuthenticated,
-		user,
-		userHasAuthenticated,
-		setUser
+		user
 	} = useAppContext();
 
   return isAuthenticated === AuthState.SignedIn && user ? (

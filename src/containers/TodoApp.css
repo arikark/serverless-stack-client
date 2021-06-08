@@ -1,7 +1,18 @@
+:root {
+  --amplify-primary-color: green;
+  --amplify-primary-tint: #2c2c2c;
+  --amplify-primary-shade: #e0573e;
+}
+
+.auth{
+	margin-bottom: auto;
+}
+
 amplify-authenticator {
   display: flex;
   justify-content: center;
   align-items: center;
   flex: 1;
-  height: 60vh;
+  height: 50vh;
+	margin-bottom: auto;
 }

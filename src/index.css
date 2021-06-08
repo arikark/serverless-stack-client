@@ -6,6 +6,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   font-family: "Open Sans", sans-serif;
+	background-image: url("https://source.unsplash.com/collection/483251");
+	background-repeat: no-repeat; /* Do not repeat the image */
+	background-size: cover;
 }
 
 code {
@@ -25,3 +28,4 @@ input.form-control {
 input[type=file] {
   width: 100%;
 }
+

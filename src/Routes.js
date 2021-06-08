@@ -5,8 +5,6 @@ import { Route, Switch } from "react-router-dom";
 
 import TodoApp from './containers/TodoApp.js';
 import Home from "./containers/Home";
-import Login from "./containers/Login";
-import Signup from "./containers/Signup";
 import NotFound from "./containers/NotFound";
 
 export default function Routes() {

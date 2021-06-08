@@ -1,17 +1,12 @@
 import React from "react";
 import { useAppContext } from "../libs/contextLib";
 import { LinkContainer } from "react-router-bootstrap";
-import {
-  AmplifySignOut,
-} from "@aws-amplify/ui-react";
-import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
+import { AmplifySignOut } from "@aws-amplify/ui-react";
+import { AuthState } from '@aws-amplify/ui-components';
 import { useHistory } from "react-router-dom";
-
 
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-
-
 
 export default function AppNavbar() {
 	const history = useHistory();
@@ -35,7 +30,7 @@ export default function AppNavbar() {
 							<AmplifySignOut
 								handleAuthStateChange={handleSignOut}
 							/>
-						) : (
+							) : (
 							<LinkContainer to="/todoapp">
 								<Nav.Link>Todo App</Nav.Link>
 							</LinkContainer>
