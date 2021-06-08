@@ -1,6 +1,9 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 
+
+
+import TodoApp from './containers/TodoApp.js';
 import Home from "./containers/Home";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
@@ -12,11 +15,8 @@ export default function Routes() {
       <Route exact path="/">
         <Home />
 			</Route>
-			<Route exact path="/login">
-				<Login />
-			</Route>
-			<Route exact path="/signup">
-				<Signup />
+			<Route exact path="/todoapp">
+				<TodoApp />
 			</Route>
 			{/* Finally, catch all unmatched routes */}
 			<Route>
