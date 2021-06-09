@@ -7,6 +7,8 @@ import "./NewNote.css";
 import { API } from "aws-amplify";
 import { s3Upload } from "../libs/awsLib";
 import { useUserContext, useNotesContext } from "../libs/contextLib";
+import { v4 as uuid } from 'uuid';
+
 import { postNote } from "../libs/apiLib";
 
 
@@ -41,7 +43,7 @@ export default function NewNote(props) {
 
 		try {
 			const attachment = file.current ? await s3Upload(file.current) : null;
-			const newNote = { content, attachment, completed: false, createdAt: new Date(Date.now()).toLocaleString()}
+			const newNote = { noteId: uuid(), content, attachment, completed: false, createdAt: new Date(Date.now()).toLocaleString()}
 			setNotes(notes => [...notes, newNote]);
 			await postNote(newNote);
 			// const notes = await loadNotes();
