@@ -6,10 +6,16 @@ import config from "../config";
 import "./NewNote.css";
 import { API } from "aws-amplify";
 import { s3Upload } from "../libs/awsLib";
-export default function NewNote({ updateNotes, loadNotes }) {
+import { useUserContext, useNotesContext } from "../libs/contextLib";
+import { postNote } from "../libs/apiLib";
+
+
+export default function NewNote(props) {
   const file = useRef(null);
   const [content, setContent] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const { notes, setNotes } = useNotesContext();
+
 
   function validateForm() {
     return content.length > 0;
@@ -35,20 +41,17 @@ export default function NewNote({ updateNotes, loadNotes }) {
 
 		try {
 			const attachment = file.current ? await s3Upload(file.current) : null;
-			await createNote({ content, attachment });
-			const notes = await loadNotes();
-			updateNotes(notes);
+			const newNote = { content, attachment, completed: false, createdAt: new Date(Date.now()).toLocaleString()}
+			setNotes(notes => [...notes, newNote]);
+			await postNote(newNote);
+			// const notes = await loadNotes();
+			// updateNotes(notes);
 			setIsLoading(false);
+			setContent("")
 		} catch (e) {
 			onError(e);
 			setIsLoading(false);
 		}
-	}
-
-	function createNote(note) {
-		return API.post("notes", "/notes", {
-			body: note
-		});
 	}
 
   return (

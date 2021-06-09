@@ -1,5 +1,5 @@
-import { useContext, createContext, useState } from "react";
-import { useApiReducer } from "./reducerLib"
+import { useContext, createContext, useState, useEffect } from "react";
+import { getNotes } from "./apiLib";
 
 export const UserContext = createContext();
 export const NotesContext = createContext();
@@ -19,6 +19,7 @@ export function AppProvider(props) {
 	const [notes, setNotes] = useState(null)
 	const [user, setUser] = useState(null);
 	const [authState, setAuthState] = useState(false);
+	// setNotes(getNotes)
 
 	return (
 		/*

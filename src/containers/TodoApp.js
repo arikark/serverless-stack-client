@@ -10,10 +10,10 @@ import Login from "./Login"
 // import { onError } from "../libs/errorLib";
 import { AuthState } from '@aws-amplify/ui-components';
 
-function TodoApp() {
+export default function TodoApp() {
 	const { user, authState } = useUserContext();
   return authState === AuthState.SignedIn && user ? (
-		<div className="TodoApp">
+		<div className="TodoApp container">
 			<div>Hello, {user.username}</div>
 			<NotesList />
 		</div>
@@ -21,5 +21,3 @@ function TodoApp() {
 			<Login />
   );
 }
-
-export default TodoApp;

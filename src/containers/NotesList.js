@@ -7,6 +7,7 @@ import { onError } from "../libs/errorLib";
 // import { loadNotes } from "../libs/awsLib";
 import CreateNewNoteButton from "../components/CreateNewNoteButton";
 import { API } from "aws-amplify";
+import { getNotes } from "../libs/apiLib";
 import "./Home.css";
 
 export default function NotesList() {
@@ -15,16 +16,15 @@ export default function NotesList() {
 	const { authState, user } = useUserContext();
 	const { notes, setNotes } = useNotesContext();
 
-
 	useEffect(() => {
 		async function onLoad() {
 			if (!user) {
 				return;
 			}
 			try {
-				const notesFromDB = await loadNotes();
+				const notesFromDB = await getNotes();
 				setNotes(notesFromDB);
-				console.log("render")
+				console.log("render 1")
 			} catch (e) {
 				onError(e);
 			}
@@ -32,7 +32,23 @@ export default function NotesList() {
 		}
 		onLoad();
 		// I dont get why setNotes has to be here
-	}, [user]);
+	}, [authState]);
+
+	// 	useEffect(() => {
+	// 	async function onLoad() {
+	// 		if (!user) {
+	// 			return;
+	// 		}
+	// 		try {
+	// 			console.log("render notes")
+	// 		} catch (e) {
+	// 			onError(e);
+	// 		}
+	// 		setIsLoading(false);
+	// 	}
+	// 	onLoad();
+	// 	// I dont get why setNotes has to be here
+	// }, [notes]);
 
 	function loadNotes() {
 		return API.get("notes", "/notes");
@@ -42,7 +58,7 @@ export default function NotesList() {
 		return (
 			<>
 				<CreateNewNoteButton onClick={toggleCreateNewNote} />
-				{isCreateNewNote && <NewNote updateNotes={setNotes} loadNotes={loadNotes}/>}
+				{isCreateNewNote && <NewNote />}
 				{notes.map(({ noteId, content, createdAt }) => (
 					<ListGroup.Item action key={noteId} >
 						<span className="font-weight-bold">
@@ -50,7 +66,7 @@ export default function NotesList() {
 						</span>
 						<br />
 						<span className="text-muted">
-							Created: {new Date(createdAt).toLocaleString()}
+							Created: {createdAt}
 						</span>
 					</ListGroup.Item>
 				))}

@@ -1,11 +1,20 @@
 import { API } from "aws-amplify";
+import { onError } from "./errorLib"
 
-export async function get(apiName, apiPath) {
-	return await API.get(apiName, apiPath);
+export function getNotes() {
+	try {
+		return API.get("notes", "/notes");
+	} catch (e) {
+		onError(e)
+	}
 }
 
-export async function post(apiName, apiPath, body) {
-	return API.post("notes", "/notes", {
-		body
+export function postNote(body) {
+	try {
+		API.post("notes", "/notes", {
+			body
 	});
+	} catch (e) {
+		onError(e)
+	}
 }
