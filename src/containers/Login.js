@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppContext } from "../libs/contextLib";
+import { useUserContext } from "../libs/contextLib";
 import "./Login.css";
 import {
 	AmplifySignIn,
@@ -11,9 +11,9 @@ import {
 import { onAuthUIStateChange } from '@aws-amplify/ui-components';
 
 export default function Login() {
-	const { userHasAuthenticated, setUser, user } = useAppContext();
+	const { setUser, user, setAuthState } = useUserContext();
 	onAuthUIStateChange((nextAuthState, authData) => {
-		userHasAuthenticated(nextAuthState);
+		setAuthState(nextAuthState);
 		setUser(authData)
 	});
 

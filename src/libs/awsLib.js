@@ -9,7 +9,3 @@ export async function s3Upload(file) {
 
   return stored.key;
 }
-
-export function loadNotes() {
-		return API.get("notes", "/notes");
-	}

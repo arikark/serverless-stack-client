@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import { useToggle } from "../libs/hooksLib";
 import NewNote from './NewNote'
-import { useAppContext } from "../libs/contextLib";
+import { useUserContext, useNotesContext } from "../libs/contextLib";
 import { onError } from "../libs/errorLib";
 // import { loadNotes } from "../libs/awsLib";
 import CreateNewNoteButton from "../components/CreateNewNoteButton";
@@ -11,12 +11,14 @@ import "./Home.css";
 
 export default function NotesList() {
 	const [isCreateNewNote, toggleCreateNewNote] = useToggle();
-  const { isAuthenticated, notes, setNotes } = useAppContext();
 	const [isLoading, setIsLoading] = useState(true);
+	const { authState, user } = useUserContext();
+	const { notes, setNotes } = useNotesContext();
+
 
 	useEffect(() => {
 		async function onLoad() {
-			if (!isAuthenticated) {
+			if (!user) {
 				return;
 			}
 			try {
@@ -30,7 +32,7 @@ export default function NotesList() {
 		}
 		onLoad();
 		// I dont get why setNotes has to be here
-	}, [isAuthenticated, setNotes]);
+	}, [user]);
 
 	function loadNotes() {
 		return API.get("notes", "/notes");
@@ -76,7 +78,7 @@ export default function NotesList() {
 
   return (
     <div className="ListNotes">
-      {isAuthenticated && renderNotes()}
+      {user && renderNotes()}
     </div>
   );
 }
