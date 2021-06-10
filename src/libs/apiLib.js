@@ -11,7 +11,7 @@ export function getNotes() {
 
 export function postNote(body) {
 	try {
-		API.post("notes", "/notes", {
+		return API.post("notes", "/notes", {
 			body
 	});
 	} catch (e) {

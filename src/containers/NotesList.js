@@ -4,7 +4,6 @@ import { useToggle } from "../libs/hooksLib";
 import NewNote from './NewNote'
 import { useUserContext, useNotesContext } from "../libs/contextLib";
 import { onError } from "../libs/errorLib";
-// import { loadNotes } from "../libs/awsLib";
 import CreateNewNoteButton from "../components/CreateNewNoteButton";
 import { API } from "aws-amplify";
 import { getNotes } from "../libs/apiLib";
@@ -14,7 +13,7 @@ export default function NotesList() {
 	const [isCreateNewNote, toggleCreateNewNote] = useToggle();
 	const [isLoading, setIsLoading] = useState(true);
 	const { authState, user } = useUserContext();
-	const { notes, setNotes } = useNotesContext();
+	const [ notes, setNotes ] = useState();
 
 	useEffect(() => {
 		async function onLoad() {
@@ -55,18 +54,21 @@ export default function NotesList() {
 	}
 
 	function renderNotesList(notes) {
+		console.log(notes)
+		const orderedNotes = notes.sort((a, b) => (a.createdAt > b.createdAt) ? 1 : -1)
+		console.log(orderedNotes)
 		return (
 			<>
 				<CreateNewNoteButton onClick={toggleCreateNewNote} />
-				{isCreateNewNote && <NewNote />}
-				{notes.map(({ noteId, content, createdAt }) => (
+				{isCreateNewNote && <NewNote setNotes={setNotes} />}
+				{orderedNotes.map(({ noteId, content, createdAt }) => (
 					<ListGroup.Item action key={noteId} >
 						<span className="font-weight-bold">
 							{content.trim().split("\n")[0]}
 						</span>
 						<br />
 						<span className="text-muted">
-							Created: {createdAt}
+							Created: {new Date(createdAt).toLocaleString()}
 						</span>
 					</ListGroup.Item>
 				))}

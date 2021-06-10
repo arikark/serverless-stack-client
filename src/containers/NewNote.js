@@ -12,11 +12,11 @@ import { v4 as uuid } from 'uuid';
 import { postNote } from "../libs/apiLib";
 
 
-export default function NewNote(props) {
+export default function NewNote({notes, setNotes}) {
   const file = useRef(null);
   const [content, setContent] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-	const { notes, setNotes } = useNotesContext();
+	const { user } = useUserContext();
 
 
   function validateForm() {
@@ -43,9 +43,11 @@ export default function NewNote(props) {
 
 		try {
 			const attachment = file.current ? await s3Upload(file.current) : null;
-			const newNote = { noteId: uuid(), content, attachment, completed: false, createdAt: new Date(Date.now()).toLocaleString()}
-			setNotes(notes => [...notes, newNote]);
-			await postNote(newNote);
+			const newNote = { content, attachment}
+			const res = await postNote(newNote);
+			console.log(res);
+			setNotes(notes => [...notes, res]);
+
 			// const notes = await loadNotes();
 			// updateNotes(notes);
 			setIsLoading(false);
