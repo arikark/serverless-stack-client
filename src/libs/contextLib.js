@@ -1,5 +1,4 @@
-import { useContext, createContext, useState, useEffect } from "react";
-import { getNotes } from "./apiLib";
+import { useContext, createContext, useState } from "react";
 
 export const UserContext = createContext();
 export const NotesContext = createContext();
@@ -8,15 +7,12 @@ export const NotesDispatchContext = createContext();
 export function useUserContext() {
   return useContext(UserContext);
 }
-export function useNotesContext() {
-  return useContext(NotesContext);
-}
+
 export function useNotesDispatchContext() {
   return useContext(NotesDispatchContext);
 }
 
 export function AppProvider(props) {
-	const [notes, setNotes] = useState(null)
 	const [user, setUser] = useState(null);
 	const [authState, setAuthState] = useState(false);
 	// setNotes(getNotes)
@@ -28,9 +24,7 @@ export function AppProvider(props) {
 		(albeit not touching Notes in state at all)
 		*/
 		<UserContext.Provider value={{ user, setUser, authState, setAuthState }}>
-			<NotesContext.Provider value={{ notes, setNotes }}>
 					{props.children}
-			</NotesContext.Provider>
 		</UserContext.Provider>
   );
 }

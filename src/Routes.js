@@ -1,18 +1,17 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-
-import TodoApp from './containers/TodoApp.js';
-import Home from "./containers/Home";
-import NotFound from "./containers/NotFound";
+import Notes from './components/Notes/Notes.js';
+import Landing from "./components/Landing/Landing";
+import NotFound from "./components/Common/NotFound";
 
 export default function Routes() {
   return (
     <Switch>
       <Route exact path="/">
-        <Home />
+        <Landing />
 			</Route>
 			<Route exact path="/notes">
-				<TodoApp />
+				<Notes />
 			</Route>
 			{/* Finally, catch all unmatched routes */}
 			<Route>

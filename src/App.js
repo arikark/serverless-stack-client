@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 
-import Layout from "./layouts/Layout";
-import AppNavbar from './containers/AppNavbar.js';
+// import Layout from "./layouts/Layout";
+import AppNavbar from './components/Navbar/AppNavbar.js';
 import Routes from "./Routes";
 import { AppProvider } from "./libs/contextLib";
 

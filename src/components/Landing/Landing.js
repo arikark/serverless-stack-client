@@ -1,13 +1,11 @@
 import React from "react";
-import "./Home.css";
+import "./Landing.css";
 
-export default function Home() {
+export default function Landing() {
   return (
-    <div className="Home">
-      <div className="lander">
+    <div className="Landing">
         <h1>Scratch</h1>
         <p className="text-muted">A simple note taking app</p>
-      </div>
     </div>
   );
 }
