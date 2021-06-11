@@ -15,7 +15,6 @@ function NewNote({ setNotes }) {
 	const file = useRef(null);
 	const [content, setContent] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-	console.log("NewNote");
 	// New note is rendering 3 times everytime you click submit. How can this be fixed?
 
 	function validateForm() {
@@ -34,15 +33,12 @@ function NewNote({ setNotes }) {
 			);
 			return;
 		}
-
 		setIsLoading(true);
 		try {
 			const attachment = file.current ? await s3Upload(file.current) : null;
 			const newNote = { content, attachment }
 			const res = await postNote(newNote);
 			setNotes(notes => [...notes, res]);
-			// const notes = await loadNotes();
-			// updateNotes(notes);
 			setIsLoading(false);
 			setContent("")
 		} catch (e) {
@@ -59,7 +55,8 @@ function NewNote({ setNotes }) {
 				<Form.Group controlId="content">
 					<Form.Control
 						value={content}
-						as="textarea"
+						type="text"
+						placeholder="New note"
 						onChange={(e) => setContent(e.target.value)}
 					/>
 				</Form.Group>

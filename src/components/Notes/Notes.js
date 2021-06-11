@@ -2,19 +2,46 @@ import React, { useState, useEffect } from "react";
 import { useUserContext } from "../../libs/contextLib";
 import NewNote from './NewNote'
 import { onError } from "../../libs/errorLib";
-import { getNotes } from "../../libs/apiLib";
+import { getNotes, deleteNote, updateNote } from "../../libs/apiLib";
 import Note from "./Note"
 
 import Login from "../Common/Login"
 // import { onError } from "../libs/errorLib";
 import { AuthState } from '@aws-amplify/ui-components';
 import ListGroup from "react-bootstrap/ListGroup";
+import {  } from "../../libs/apiLib";
+
 
 export default function Notes() {
 	const [isLoading, setIsLoading] = useState(true);
-	const [notes, setNotes] = useState();
-	const { user, authState } = useUserContext();
+	const [notes, setNotes] = useState(null);
+	const { user, authState } = useUserContext(null);
 
+	async function handleUpdate(updatedNoteId, content) {
+		try {
+			console.log(`handleupdate: ${content}`)
+			const res = await updateNote(updatedNoteId, content);
+			console.log(res)
+			setNotes(notes.map(note => note.noteId === updatedNoteId ? { ...note, content } : note));
+		} catch (e) {
+			onError(e)
+		}
+	}
+
+	async function handleDelete(deletedNoteId) {
+		try {
+			await deleteNote(deletedNoteId);
+			// const confirmed = window.confirm(
+			// 	"Are you sure you want to delete this note?"
+			// );
+			// if (!confirmed) {
+			// 	return;
+			// }
+			setNotes(notes.filter(note => note.noteId !== deletedNoteId));
+		} catch (e) {
+			onError(e)
+		}
+	}
 
 	useEffect(() => {
 		async function onLoad() {
@@ -40,7 +67,10 @@ export default function Notes() {
 		return (
 			 <ListGroup>
 				{orderedNotes.map((note) => (
-					<Note {...note} key={ note.noteId }/>
+					<Note {...note}
+						handleDelete={handleDelete}
+						handleUpdate={handleUpdate}
+						key={note.noteId} />
 				))}
 			 </ListGroup>
 		);
