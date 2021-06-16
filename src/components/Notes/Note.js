@@ -4,8 +4,16 @@ import { useToggle } from "../../libs/hooksLib";
 
 export default function Note({ noteId, content, createdAt, handleDelete, handleUpdate }) {
 	const [isEdit, setEdit] = useToggle(true)
+	const [isLoading, setIsLoading] = useState(false);
 	const displayContent = content.trim().split("\n")[0];
 	const [formContent, setFormContent] = useState(displayContent);
+
+	const handleEdit = async () => {
+		setIsLoading(true)
+		await handleUpdate(noteId, formContent);
+		setIsLoading(false)
+		setEdit(false)
+	}
 
 	return (
 		<ListGroup.Item key={noteId} >
@@ -34,14 +42,11 @@ export default function Note({ noteId, content, createdAt, handleDelete, handleU
 						aria-label="Toolbar with Button groups"
 					>
 						<ButtonGroup aria-label="edit and delete">
-							{isEdit ?
+							{isLoading && isEdit ?
 								<Button variant="outline-secondary" onClick={setEdit}>Edit</Button> :
-								<Button variant="outline-secondary submit" disabled={!formContent} onClick={() => {
-									handleUpdate(noteId, formContent);
-									setEdit(false)
-								}}
+								<Button variant="outline-secondary submit" disabled={!formContent} onClick={handleEdit}
 								>Update</Button>
-							}
+								}
 							<Button variant="outline-secondary" onClick={()=>handleDelete(noteId)}>Delete</Button>
 						</ButtonGroup>
 					</ButtonToolbar>

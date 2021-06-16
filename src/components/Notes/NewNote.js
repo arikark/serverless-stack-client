@@ -7,7 +7,7 @@ import "./NewNote.css";
 import { s3Upload } from "../../libs/awsLib";
 import { postNote } from "../../libs/apiLib";
 import { useToggle } from "../../libs/hooksLib";
-import CreateNewNoteButton from "../Common/CreateNewNoteButton";
+import CreateNewNoteButton from "./CreateNewNoteButton";
 
 
 function NewNote({ setNotes }) {

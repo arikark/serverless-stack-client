@@ -31,12 +31,6 @@ export default function Notes() {
 	async function handleDelete(deletedNoteId) {
 		try {
 			await deleteNote(deletedNoteId);
-			// const confirmed = window.confirm(
-			// 	"Are you sure you want to delete this note?"
-			// );
-			// if (!confirmed) {
-			// 	return;
-			// }
 			setNotes(notes.filter(note => note.noteId !== deletedNoteId));
 		} catch (e) {
 			onError(e)
