@@ -1,25 +1,26 @@
 import React, { useRef, useState, memo } from "react";
-import Form from "react-bootstrap/Form";
-import LoaderButton from "../Common/LoaderButton";
-import { onError } from "../../libs/errorLib";
-import config from "../../config";
 import "./NewNote.css";
-import { s3Upload } from "../../libs/awsLib";
-import { postNote } from "../../libs/apiLib";
-import { useToggle } from "../../libs/hooksLib";
+import config from "../../config";
+
+import { onError } from "../../libs/errorLib";
+import { useToggle } from "../../libs/hooks/commonHooksLib";
+import { s3Upload } from "../../libs/api/awsApi";
+import { postNote } from "../../libs/api/notesApi";
+
 import CreateNewNoteButton from "./CreateNewNoteButton";
 
+import Form from "react-bootstrap/Form";
 
-function NewNote({ setNotes }) {
+import {
+	Button, Spinner
+} from "react-bootstrap";
+
+function NewNote({ dispatch }) {
 	const [isCreateNewNote, toggleCreateNewNote] = useToggle();
 	const file = useRef(null);
 	const [content, setContent] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	// New note is rendering 3 times everytime you click submit. How can this be fixed?
-
-	function validateForm() {
-		return content.length > 0;
-	}
 
 	function handleFileChange(event) {
 		file.current = event.target.files[0];
@@ -38,7 +39,7 @@ function NewNote({ setNotes }) {
 			const attachment = file.current ? await s3Upload(file.current) : null;
 			const newNote = { content, attachment }
 			const res = await postNote(newNote);
-			setNotes(notes => [...notes, res]);
+			dispatch({ type: "ADD", newNote: res});
 			setIsLoading(false);
 			setContent("")
 		} catch (e) {
@@ -64,16 +65,16 @@ function NewNote({ setNotes }) {
 					<Form.Label>Attachment</Form.Label>
 					<Form.Control onChange={handleFileChange} type="file" />
 				</Form.Group>
-				<LoaderButton
-					block
-					type="submit"
-					size="lg"
-					variant="primary"
-					isLoading={isLoading}
-					disabled={!validateForm()}
-				>
-					Create
-        </LoaderButton>
+					<Button block disabled={!content} variant="outline-secondary" type="submit" size="lg">
+						{isLoading ?
+							<Spinner
+								as="span"
+								animation="border"
+								size="sm"
+								role="status"
+								aria-hidden="true"
+							/> : "Create"}
+					</Button>
 			</Form>)}
 		</div>
   );

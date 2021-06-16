@@ -1,5 +1,5 @@
 import { API } from "aws-amplify";
-import { onError } from "./errorLib"
+import { onError } from "../errorLib"
 
 export function getNotes() {
 	try {

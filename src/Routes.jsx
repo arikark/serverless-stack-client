@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import Notes from './components/Notes/Notes.js';
+import Notes from './components/Notes/Notes';
 import Landing from "./components/Landing/Landing";
 import NotFound from "./components/Common/NotFound";
 
