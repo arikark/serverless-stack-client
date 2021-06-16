@@ -41,7 +41,7 @@ export default function Notes() {
 		console.log("renderNotesList")
 		const orderedNotes = notes?.sort((a, b) => (a.createdAt > b.createdAt) ? 1 : -1)
 		return (
-			 <ListGroup>
+			<ListGroup className='my-2'>
 				{orderedNotes.map((note) => (
 					<Note {...note}
 						dispatch={dispatch}
