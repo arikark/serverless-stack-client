@@ -1,21 +1,24 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect } from "react";
 
-import { useUserContext } from "../../libs/contextLib";
-import { getNotes } from "../../libs/api/notesApi";
+import { useUserContext } from "../../contexts/UserContext";
+import { useNotesContext } from "../../contexts/NotesContext";
+import { useNotesDispatchContext } from "../../contexts/NotesContext";
+
+import { getNotes } from "../../api/notesApi";
 import { onError } from "../../libs/errorLib";
-import notesReducer from "../../libs/reducers/notesReducer";
 import { AuthState } from '@aws-amplify/ui-components';
 
 import NewNote from './NewNote'
 import Note from "./Note"
-import Login from "../Common/Login"
+import Login from "../Login/Login"
 
 import ListGroup from "react-bootstrap/ListGroup";
 
 export default function Notes() {
-	const [isLoading, setIsLoading] = useState(true);
-	const [notes, dispatch] = useReducer(notesReducer);
 	const { user, authState } = useUserContext();
+	const [ isLoading, setIsLoading ] = useState(true);
+	const notes = useNotesContext();
+	const notesDispatch = useNotesDispatchContext();
 
 	// Is this the best way to initialise our state? Or should it be initialised by lazy init function?
 	useEffect(() => {
@@ -28,14 +31,14 @@ export default function Notes() {
 				console.log("Notes List On Effect - get from db")
 				// can we add the getNotes function to the reducer's dispatch?
 				const notesFromDB = await getNotes();
-				dispatch({ type: "INIT", notesFromDB })
+				notesDispatch({ type: "INIT", notesFromDB })
 			} catch (e) {
 				onError(e);
 			}
 			setIsLoading(false);
 		}
 		onLoad();
-	}, [authState]);
+	}, [authState, notesDispatch]);
 
 	function renderNotesList() {
 		console.log("renderNotesList")
@@ -44,7 +47,6 @@ export default function Notes() {
 			<ListGroup className='my-2'>
 				{orderedNotes.map((note) => (
 					<Note {...note}
-						dispatch={dispatch}
 						key={note.noteId} />
 				))}
 			 </ListGroup>
@@ -57,7 +59,7 @@ export default function Notes() {
 				<div className="notes">
 				<h2 className="pb-3action.res mt-4 mb-3 border-bottom">Your Notes</h2>
 			</div>
-			<NewNote dispatch={dispatch} />
+			<NewNote />
 			{!isLoading && renderNotesList()}
 		</div>
 	) : (

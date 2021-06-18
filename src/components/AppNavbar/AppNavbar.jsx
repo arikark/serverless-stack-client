@@ -1,5 +1,5 @@
 import React from "react";
-import { useUserContext } from "../../libs/contextLib";
+import { useUserContext } from "../../contexts/UserContext";
 import { LinkContainer } from "react-router-bootstrap";
 import { AmplifySignOut } from "@aws-amplify/ui-react";
 import { AuthState } from '@aws-amplify/ui-components';

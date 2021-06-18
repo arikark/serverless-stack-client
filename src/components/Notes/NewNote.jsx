@@ -2,10 +2,12 @@ import React, { useRef, useState, memo } from "react";
 import "./NewNote.css";
 import config from "../../config";
 
+import { useNotesDispatchContext } from "../../contexts/NotesContext";
+
 import { onError } from "../../libs/errorLib";
-import { useToggle } from "../../libs/hooks/commonHooksLib";
-import { s3Upload } from "../../libs/api/awsApi";
-import { postNote } from "../../libs/api/notesApi";
+import { useToggle } from "../../hooks/commonHooksLib";
+import { s3Upload } from "../../api/awsApi";
+import { postNote } from "../../api/notesApi";
 
 import CreateNewNoteButton from "./CreateNewNoteButton";
 
@@ -20,11 +22,13 @@ function NewNote({ dispatch }) {
 	const file = useRef(null);
 	const [content, setContent] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
+	const notesDispatch = useNotesDispatchContext();
 	// New note is rendering 3 times everytime you click submit. How can this be fixed?
 
 	function handleFileChange(event) {
 		file.current = event.target.files[0];
 	}
+
 	async function handleSubmit(event) {
 		event.preventDefault();
 		if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
@@ -39,7 +43,7 @@ function NewNote({ dispatch }) {
 			const attachment = file.current ? await s3Upload(file.current) : null;
 			const newNote = { content, attachment }
 			const res = await postNote(newNote);
-			dispatch({ type: "ADD", newNote: res});
+			notesDispatch({ type: "ADD", newNote: res });
 			setIsLoading(false);
 			setContent("")
 		} catch (e) {
@@ -52,19 +56,19 @@ function NewNote({ dispatch }) {
 		<div className="NewNote">
 			<CreateNewNoteButton onClick={toggleCreateNewNote} />
 			{isCreateNewNote && (
-			<Form onSubmit={handleSubmit}>
-				<Form.Group controlId="content">
-					<Form.Control
-						value={content}
-						type="text"
-						placeholder="New note"
-						onChange={(e) => setContent(e.target.value)}
-					/>
-				</Form.Group>
-				<Form.Group controlId="file">
-					<Form.Label>Attachment</Form.Label>
-					<Form.Control onChange={handleFileChange} type="file" />
-				</Form.Group>
+				<Form onSubmit={handleSubmit}>
+					<Form.Group controlId="content">
+						<Form.Control
+							value={content}
+							type="text"
+							placeholder="New note"
+							onChange={(e) => setContent(e.target.value)}
+						/>
+					</Form.Group>
+					<Form.Group controlId="file">
+						<Form.Label>Attachment</Form.Label>
+						<Form.Control onChange={handleFileChange} type="file" />
+					</Form.Group>
 					<Button block disabled={!content} variant="outline-secondary" type="submit" size="lg">
 						{isLoading ?
 							<Spinner
@@ -75,9 +79,9 @@ function NewNote({ dispatch }) {
 								aria-hidden="true"
 							/> : "Create"}
 					</Button>
-			</Form>)}
+				</Form>)}
 		</div>
-  );
+	);
 }
 
 export default memo(NewNote)
